@@ -47,13 +47,13 @@ void Aff_TabRevers(int T[],int T_revers[],int N)
 }
 
 void fusion(int tableau[],int deb1,int fin1,int fin2)
-        {
+ {
+        
         int *table1;
         int deb2=fin1+1;
         int compt1=deb1;
         int compt2=deb2;
         int i;
-        
         table1=malloc((fin1-deb1+1)*sizeof(int));
 
        
@@ -85,7 +85,8 @@ void fusion(int tableau[],int deb1,int fin1,int fin2)
                 }
             }
         free(table1);
-        }
+        
+}
         
 
 void tri_fusion_bis(int tableau[],int deb,int fin)
@@ -99,49 +100,42 @@ void tri_fusion_bis(int tableau[],int deb,int fin)
             }
         }
 
-void tri_fusion(int tableau[],int longueur)
+double tri_fusion(int tableau[],int longueur)
      {
-     if (longueur>0)
+        double temps;
+        clock_t start, stop;
+        start = clock();
+        if (longueur>0)
             {
             tri_fusion_bis(tableau,0,longueur-1);
             }
+        stop = clock();
+        temps=(double)(stop-start)/CLOCKS_PER_SEC;
+        return temps;
      }
 
 int main()
 {
-    int N;
-    double temps;
-    clock_t start, stop;   
+    int N,i,j;
+    double temps,temps2,temps3;
     srand(time(NULL));
     printf("DONNEZ UNE TAILLE POUR LE TABLEAU QUE VOUS VOULEZ TRIER:");
     scanf("%d", &N);
     int * T= (int*)malloc(N*sizeof(int));
     int * Tr= (int*)malloc(N*sizeof(int));
+    int * TT= (int*)malloc(N*sizeof(int));
     Gen_Tab(T,N);
-    printf("\n");
-    printf("TABLEAU AVANT LE TRI: \n");
-    Aff_Tab(T,N);
-    printf("\n\n");
-    printf("TABLEAU APRES LE TRI : \n");
-    start = clock();
-    tri_fusion(T,N);
-    stop = clock();
-    Aff_Tab (T,N);
-    Aff_TabRevers(T,Tr,N);
-    temps=(double)(stop-start)/CLOCKS_PER_SEC;
-    printf("\n\n");
-    printf("Temps d'execution 1 (Valeurs Aléatoires): %f", temps);
-    start = clock();
-    tri_fusion(Tr,N);
-    stop = clock();
-    temps=(double)(stop-start)/CLOCKS_PER_SEC;
-    printf("\nTemps d'execution 2 (Valeurs triées inversement): %f", temps);
-    start = clock();
-    tri_fusion(T,N);
-    stop = clock();
-    temps=(double)(stop-start)/CLOCKS_PER_SEC;
-    printf("\nTemps d'execution 3 (Valeurs triées): %f", temps);
-    printf("\n\n");
+    printf("finished \n");
+    temps = tri_fusion(T,N);
+    printf("finished \n");
+    for (i = N-1, j=0; i >= 0; i--, j++)
+    Tr[j] = T[i];
+    /*for(i=0; i<N; i++) TT[i] = T[i];*/
+    printf("Temps d'execution 1 (Valeurs Aléatoires): %f \n", temps);
+    temps2 = tri_fusion(Tr,N);
+    printf("\nTemps d'execution 2 (Valeurs triées inversement): %f \n", temps2);
+    /*temps3 = tri_fusion(TT,N);
+    printf("\nTemps d'execution 3 (Valeurs triées): %f \n", temps3);*/
 
     return 0;
 }
