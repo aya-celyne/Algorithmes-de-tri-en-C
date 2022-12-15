@@ -46,12 +46,14 @@ void Aff_TabRevers(int T[],int T_revers[],int N)
     }
 }
 
-void Tri_bulle (int T[], int N)
+double Tri_bulle (int T[], int N)
 {
     int i,temp,x;
     int permut;
-
+    double temps;
+    clock_t start, stop;
     x=N;
+    start = clock();
     do
     {
         x=x-1;
@@ -68,43 +70,34 @@ void Tri_bulle (int T[], int N)
             }
         }
     }while (permut==TRUE);
+    stop = clock();
+    temps = (double)(stop-start)/CLOCKS_PER_SEC;
+    return temps;
 }
 
 int main()
 {
-    int N;
+    int N,i,j;
     double temps;
-    clock_t start, stop;   
     srand(time(NULL));
     printf("DONNEZ UNE TAILLE POUR LE TABLEAU QUE VOUS VOULEZ TRIER:");
     scanf("%d", &N);
     int * T= (int*)malloc(N*sizeof(int));
     int * Tr= (int*)malloc(N*sizeof(int));
+    int * TT= (int*)malloc(N*sizeof(int));
     Gen_Tab(T,N);
-    printf("\n");
-    printf("TABLEAU AVANT LE TRI: \n");
-    Aff_Tab(T,N);
-    printf("\n\n");
-    printf("TABLEAU APRES LE TRI : \n");
-    start = clock();
-    Tri_bulle(T,N);
-    stop = clock();
-    Aff_Tab (T,N);
-    Aff_TabRevers(T,Tr,N);
-    temps=(double)(stop-start)/CLOCKS_PER_SEC;
-    printf("\n\n");
-    printf("Temps d'execution 1 (Valeurs Aléatoires): %f", temps);
-    start = clock();
-    Tri_bulle(Tr,N);
-    stop = clock();
-    temps=(double)(stop-start)/CLOCKS_PER_SEC;
-    printf("\nTemps d'execution 2 (Valeurs triées inversement): %f", temps);
-    start = clock();
-    Tri_bulle(T,N);
-    stop = clock();
-    temps=(double)(stop-start)/CLOCKS_PER_SEC;
+    printf("finished \n");
+    temps= Tri_bulle(T,N);
+    printf("finished \n");
+    printf("Temps d'execution 1 (Valeurs Aléatoires): %f \n", temps);
+    for (i = N-1, j=0; i >= 0; i--, j++)
+    Tr[j] = T[i];
+    //for(i=0; i<N; i++) TT[i] = T[i];
+    temps = Tri_bulle(Tr,N);
+    printf("\nTemps d'execution 2 (Valeurs triées inversement): %f \n", temps);
+    /*temps=Tri_bulle(T,N);
     printf("\nTemps d'execution 3 (Valeurs triées): %f", temps);
-    printf("\n\n");
+    printf("\n\n");*/
 
     return 0;
 }
