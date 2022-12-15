@@ -47,10 +47,12 @@ void Aff_TabRevers(int T[],int T_revers[],int N)
     }
 }
 
-void Tri_insertion (int T[], int N)
+double Tri_insertion (int T[], int N)
 {
       int i,j,temp,stop;
-
+        double temps;
+        clock_t start, stopclock;  
+        start = clock(); 
       for (i=1;i<N;i++)
       {
           j=i-1;
@@ -71,67 +73,34 @@ void Tri_insertion (int T[], int N)
 
           }
       }
+      stopclock = clock();
+      temps = (double)(stopclock - start)/CLOCKS_PER_SEC;
+      return temps;
 }
 
 int main()
 {
-    /*int i,k,n;
-    clock_t d,f;
-    printf("Donner la taille :  ");
-    scanf("%d",&n);
-
-
-    int* tab = (int*)malloc(n*sizeof(int));
-
-    Gen_Tab(tab,n);
-
-    Aff_Tab(tab,n);
-
-    d=clock();
-    Tri_insertion(tab,n);
-    f=clock();
-    
-    printf("\n tab tri\n");
-
-    Aff_Tab(tab,n);
-    double temp_exe=(double)(f-d)/CLOCKS_PER_SEC;
-    printf("\n - le temps d'execution est %f \n",temp_exe);*/
-
-    
-
-    int N;
+    int N,i,j;
     double temps;
-    clock_t start, stop;   
     srand(time(NULL));
     printf("DONNEZ UNE TAILLE POUR LE TABLEAU QUE VOUS VOULEZ TRIER:");
     scanf("%d", &N);
     int * T= (int*)malloc(N*sizeof(int));
     int * Tr= (int*)malloc(N*sizeof(int));
+    int * TT= (int*)malloc(N*sizeof(int));
     Gen_Tab(T,N);
-    printf("\n");
-    printf("TABLEAU AVANT LE TRI: \n");
-    Aff_Tab(T,N);
-    printf("\n\n");
-    printf("TABLEAU APRES LE TRI : \n");
-    start = clock();
-    Tri_insertion(T,N);
-    stop = clock();
-    Aff_Tab (T,N);
-    Aff_TabRevers(T,Tr,N);
-    temps=(double)(stop-start)/CLOCKS_PER_SEC;
-    printf("\n\n");
-    printf("Temps d'execution 1 (Valeurs Aléatoires): %f", temps);
-    start = clock();
-    Tri_insertion(Tr,N);
-    stop = clock();
-    temps=(double)(stop-start)/CLOCKS_PER_SEC;
-    printf("\nTemps d'execution 2 (Valeurs triées inversement): %f", temps);
-    start = clock();
-    Tri_insertion(T,N);
-    stop = clock();
-    temps=(double)(stop-start)/CLOCKS_PER_SEC;
+    printf("finished\n");
+    temps = Tri_insertion(T,N);
+    printf("finished\n");
+    printf("Temps d'execution 1 (Valeurs Aléatoires): %f \n", temps);
+    for (i = N-1, j=0; i >= 0; i--, j++)
+    Tr[j] = T[i];
+    //for(i=0; i<N; i++) TT[i] = T[i];
+    temps = Tri_insertion(Tr,N);
+    printf("\nTemps d'execution 2 (Valeurs triées inversement): %f \n", temps);
+    /*temps = Tri_insertion(T,N);
     printf("\nTemps d'execution 3 (Valeurs triées): %f", temps);
-    printf("\n\n");
+    printf("\n\n");*/
 
     return 0;
 }
