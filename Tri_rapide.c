@@ -18,11 +18,16 @@ void Gen_Tab(int T[],int N)
 
 void Aff_Tab(int T[], int N)
 {
+
     int i;
-    for (i=0; i<N; i++)
+    if (N > 1000)
     {
-        printf("%d |",T[i]);
-    }
+        for (i=0; i<N; i++)
+        {
+            printf("%d |",T[i]);
+        }
+    }else printf("<Tableau très grand>");
+      
 }
 
 void Aff_TabRevers(int T[],int T_revers[],int N)
@@ -37,13 +42,17 @@ void Aff_TabRevers(int T[],int T_revers[],int N)
   for (i = 0; i < N; i++)
     T[i] = T_revers[i];
 
-    for (i=0; i<N; i++)
+    if (N<=1000)
     {
-        if (T_revers != 0) 
+        for (i=0; i<N; i++)
         {
-            printf("%d |",T_revers[i]);
+            if (T_revers != 0) 
+            {
+                printf("%d |",T_revers[i]);
+            }
         }
-    }
+    }else printf("<Tableau très grand>");
+    
 }
 
 typedef struct maillon maillon;
@@ -149,10 +158,13 @@ void permut (int* p_pivot , int* Bsup)
         *Bsup=tmp;
     }
 
-void Tri_rapide (int T[], int N)
+double Tri_rapide (int T[], int N)
 {
+    double temps;
+    clock_t start, stop;
     int Binf,Bsup,i,pivot,p_pivot;
     TypePile P;
+    start = clock();
     CreerPile (&P);
     Empiler(&P,0);
     Empiler (&P,N-1);
@@ -184,44 +196,38 @@ void Tri_rapide (int T[], int N)
 
         }
     }
+    stop = clock();
+    temps=(double)(stop-start)/CLOCKS_PER_SEC;
+
+    return temps;
 }
 
 int main()
 {
-    int N;
-    double temps;
-    clock_t start, stop;   
+    int N,i,j;
+    double temps,temps2,temps3;
+    clock_t start, stop,startT,stopT;   
     srand(time(NULL));
     printf("DONNEZ UNE TAILLE POUR LE TABLEAU QUE VOUS VOULEZ TRIER:");
     scanf("%d", &N);
+    printf("\n");
     int * T= (int*)malloc(N*sizeof(int));
     int * Tr= (int*)malloc(N*sizeof(int));
+    int * TT= (int*)malloc(N*sizeof(int));
     Gen_Tab(T,N);
-    printf("\n");
-    printf("TABLEAU AVANT LE TRI: \n");
-    Aff_Tab(T,N);
-    printf("\n\n");
-    printf("TABLEAU APRES LE TRI : \n");
-    start = clock();
-    Tri_rapide(T,N);
-    stop = clock();
-    Aff_Tab (T,N);
-    Aff_TabRevers(T,Tr,N);
-    temps=(double)(stop-start)/CLOCKS_PER_SEC;
-    printf("\n\n");
-    printf("Temps d'execution 1 (Valeurs Aléatoires): %f", temps);
-    start = clock();
-    Tri_rapide(Tr,N);
-    stop = clock();
-    temps=(double)(stop-start)/CLOCKS_PER_SEC;
-    printf("\nTemps d'execution 2 (Valeurs triées inversement): %f", temps);
-    start = clock();
-    Tri_rapide(T,N);
-    stop = clock();
-    temps=(double)(stop-start)/CLOCKS_PER_SEC;
-    printf("\nTemps d'execution 3 (Valeurs triées): %f", temps);
-    printf("\n\n");
+    printf("finished \n");
+    temps=Tri_rapide(T,N);
+    printf("finished \n");
+    for (i = N-1, j=0; i >= 0; i--, j++) 
+        Tr[j] = T[i];
+    /*for(i=0; i<N; i++) 
+        TT[i] = T[i];*/
+
+    //printf("Temps d'execution 1 (Valeurs Aléatoires): %f \n", temps);
+    temps2= Tri_rapide(Tr,N);
+    printf("\nTemps d'execution 2 (Valeurs triées inversement): %f \n", temps2);
+    /*temps3=Tri_rapide(TT,N);
+    printf("\nTemps d'execution 3 (Valeurs triées): %f \n\n", temps3);*/
 
     return 0;
-    
 }
